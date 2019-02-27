@@ -35,6 +35,6 @@ public class Main {
     }
 
     double frac(int m, double r){
-        return
+        return 1;
     }
 }
