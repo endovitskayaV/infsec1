@@ -4,30 +4,41 @@ import java.util.List;
 import java.util.Set;
 
 public class Main {
-    int maxL = Integer.MIN_VALUE;
-    int minL = Integer.MAX_VALUE;
-    int maxl = Integer.MIN_VALUE;
-    int minl = Integer.MAX_VALUE;
-    static final double step = Math.pow(2, -10);
+
+    private static final double step = 2*Math.pow(10, -10);
 
     public static void main(String[] args) {
+        test1();
+       // test2();
+    }
+
+    private static void test1() {
         Main m = new Main();
         double r = 0;
         while (r + step < 1.0) {
             r += step;
             for (int t = 1; t < 100; t++) {
-                m.generate(16 * t +11, r);
+                m.generate(8 * t - 3, r);
+                System.out.println();
             }
         }
-        System.out.println("minL=" + m.minL);
-        System.out.println("maxL=" + m.maxL);
-        System.out.println("minl=" + m.minl);
-        System.out.println("maxl=" + m.maxl);
+    }
+
+    private static void test2() {
+        Main m = new Main();
+        double r = 0;
+        while (r + step < 1.0) {
+            r += step;
+            for (int t = 1; t < 10; t++) {
+                m.generate(16 * t + 11, r);
+                System.out.println();
+            }
+        }
     }
 
     private void generate(int m, double r) {
-        //System.out.println("m=" + m);
-        //System.out.println("r=" + r);
+        System.out.print(" m=" + m);
+        System.out.print(" r=" + r);
         List<Double> seq = new ArrayList<>();
         seq.add(r);
         for (int i = 0; i < 100_000; i++) {
@@ -35,7 +46,7 @@ public class Main {
             seq.add(r);
         }
 
-        //seq.forEach(System.out::println);
+        //seq.forEach(System.out::print);
 
         len(seq);
         statistics(new HashSet<>(seq));
@@ -46,51 +57,27 @@ public class Main {
         return a - Math.floor(a);
     }
 
-    void len(List<Double> seq) {
+    private void len(List<Double> seq) {
         Set<Double> set = new HashSet<>();
         int i;
         int L = -1;
         for (i = 0; i < seq.size(); i++) {
             if (set.contains(seq.get(i))) {
                 L = i;
-                System.out.println("L=" + L);
-                if (L < minL) {
-                    minL = L;
-                }
-                if (L > maxL) {
-                    maxL = L;
-                }
+                System.out.print(" L=" + L);
                 break;
             }
             set.add(seq.get(i));
         }
-        if (L != -1) {
-            L = i;
 
-            int i1 = (int) (L * 80.0 / 100.0);
-            double start = seq.get(i1);
-            for (i = i1 + 1; i < seq.size(); i++) {
-                if (seq.get(i).equals(start)) {
-                    int l = i - i1;
-                    System.out.println("l=" + l);
-                    if (l < minl) {
-                        minl = l;
-                    }
-                    if (l > maxl) {
-                        maxl = l;
-                    }
-                    break;
-                }
-            }
-        }
     }
 
     private void statistics(Set<Double> seq) {
         double m = seq.stream().reduce((a, b) -> a + b).get() / seq.size();
-        //System.out.println("m=" + m);
+        System.out.print(" mid=" + m);
 
         double d = seq.stream().mapToDouble(number -> Math.pow(m - number, 2)).sum() / seq.size();
-        //System.out.println("d=" + d);
+        System.out.print(" d=" + d);
 
         final int intervalCount = 10;
 
@@ -107,7 +94,7 @@ public class Main {
         }
         hi2 /= averageFreq;
 
-        //System.out.println("hi2="+hi2);
+        System.out.print(" hi2=" + hi2);
 
     }
 }
